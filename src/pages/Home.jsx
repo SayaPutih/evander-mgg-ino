@@ -27,6 +27,7 @@ const Home = () => {
 
       if (!Array.isArray(response.data)) {
         throw new Error('Unexpected data format. Expected an array.');
+        console.log(response.data);
       }
 
       const groupedTransactions = response.data.reduce((acc, transaction) => {
