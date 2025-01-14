@@ -43,5 +43,5 @@
   "devDependencies": {
     "tailwindcss": "^3.1.8"
   },
-  "proxy": "https://react-back-31sufniwh-sayaputihs-projects.vercel.app"
+  "proxy": "https://react-back-31sufniwh-sayaputihs-projects.vercel.app/api/"
 }

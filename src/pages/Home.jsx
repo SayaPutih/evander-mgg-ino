@@ -23,7 +23,7 @@ const Home = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/api/transactions');
+      const response = await axios.get('transactions');
       console.log('API Response:', response.data); 
 
       if (!Array.isArray(response.data)) {
@@ -86,7 +86,7 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">Transactions</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Transactions!</h1>
       {isLoading ? (
         <p className="text-center text-blue-500">Loading...</p>
       ) : error ? (
