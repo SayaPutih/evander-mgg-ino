@@ -23,9 +23,11 @@ const Home = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        '/api/transactions' // URL of your production API
-      );
+      const response = await axios.get('/api/transactions');
+
+      if (!Array.isArray(response.data)) {
+        throw new Error('Unexpected data format. Expected an array.');
+      }
 
       const groupedTransactions = response.data.reduce((acc, transaction) => {
         const transactionDate = isValidDate(transaction.transactionDate)
@@ -72,9 +74,7 @@ const Home = () => {
   const handleDelete = async (id) => {
     setError(null);
     try {
-      await axios.delete(
-        `/api/transactions/${id}` // URL of your production API
-      );
+      await axios.delete(`/api/transactions/${id}`);
       fetchTransactions();
     } catch (err) {
       setError('Failed to delete transaction. Please try again later.');
