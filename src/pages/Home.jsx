@@ -23,7 +23,7 @@ const Home = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('transactions');
+      const response = await axios.get('/api/transactions');
       console.log('API Response:', response.data); 
 
       if (!Array.isArray(response.data)) {
