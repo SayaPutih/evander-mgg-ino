@@ -23,11 +23,11 @@ const Home = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/api/transactions');
+      const response = await axios.get('https://react-back-31sufniwh-sayaputihs-projects.vercel.app/api/transactions');
 
       if (!Array.isArray(response.data)) {
         throw new Error('Unexpected data format. Expected an array.');
-        console.log(response.data);
+        
       }
 
       const groupedTransactions = response.data.reduce((acc, transaction) => {
