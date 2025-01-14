@@ -24,7 +24,7 @@ const Home = () => {
     setError(null);
     try {
       const response = await axios.get(
-        'https://react-back-31sufniwh-sayaputihs-projects.vercel.app/api/transactions' // URL of your production API
+        '/api/transactions' // URL of your production API
       );
 
       const groupedTransactions = response.data.reduce((acc, transaction) => {
@@ -73,7 +73,7 @@ const Home = () => {
     setError(null);
     try {
       await axios.delete(
-        `https://react-back-31sufniwh-sayaputihs-projects.vercel.app/api/transactions/${id}` // URL of your production API
+        `/api/transactions/${id}` // URL of your production API
       );
       fetchTransactions();
     } catch (err) {
