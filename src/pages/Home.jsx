@@ -24,11 +24,10 @@ const Home = () => {
     setError(null);
     try {
       const response = await axios.get('/api/transactions');
-      console.log('API Response:', response.data); 
+      console.log('API Response:', response.data);
 
       if (!Array.isArray(response.data)) {
         throw new Error('Unexpected data format. Expected an array.');
-        
       }
 
       const groupedTransactions = response.data.reduce((acc, transaction) => {
@@ -86,7 +85,7 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">Transactions!</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Transactionsss</h1>
       {isLoading ? (
         <p className="text-center text-blue-500">Loading...</p>
       ) : error ? (
