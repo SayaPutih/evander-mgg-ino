@@ -24,6 +24,7 @@ const Home = () => {
     setError(null);
     try {
       const response = await axios.get('https://react-back-31sufniwh-sayaputihs-projects.vercel.app/api/transactions');
+      console.log('API Response:', response.data); 
 
       if (!Array.isArray(response.data)) {
         throw new Error('Unexpected data format. Expected an array.');
