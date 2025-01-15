@@ -46,7 +46,7 @@ const Home = () => {
           ...transaction,
           transactionDate,
           createOn,
-          status_t: transaction.status === 0 ? 'FAILED' : 'SUCCESS',
+          status_t: transaction.status === 1 ? 'FAILED' : 'SUCCESS',
         });
 
         return acc;
