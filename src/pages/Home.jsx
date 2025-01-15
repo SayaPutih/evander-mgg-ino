@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://hqtuykqfqmflrljfsgkf.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdHV5a3FmcW1mbHJsamZzZ2tmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4NjgxNjIsImV4cCI6MjA1MjQ0NDE2Mn0.Vf7mHeTt_hcj2hTuE_zwN29wayyJXzz2ETG5NftXcL0';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Home = () => {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const isValidDate = (date) => !isNaN(new Date(date).getTime());
 
   const formatDate = (date) =>
     new Intl.DateTimeFormat('en-GB', {
@@ -17,27 +19,22 @@ const Home = () => {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
-    }).format(date);
+    }).format(new Date(date));
 
   const fetchTransactions = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/api/transactions');
-      console.log('API Response:', response.data);
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('transactionDate', { ascending: false });
 
-      if (!Array.isArray(response.data)) {
-        throw new Error('Unexpected data format. Expected an array.');
-      }
+      if (error) throw error;
 
-      const groupedTransactions = response.data.reduce((acc, transaction) => {
-        const transactionDate = isValidDate(transaction.transactionDate)
-          ? new Date(transaction.transactionDate)
-          : new Date();
-
-        const createOn = isValidDate(transaction.createOn)
-          ? new Date(transaction.createOn)
-          : new Date();
+      const groupedTransactions = data.reduce((acc, transaction) => {
+        const transactionDate = new Date(transaction.transactionDate);
+        const createOn = new Date(transaction.createOn);
 
         const yearMonth = `${transactionDate.getFullYear()}-${transactionDate.getMonth() + 1}`;
 
@@ -49,7 +46,7 @@ const Home = () => {
           ...transaction,
           transactionDate,
           createOn,
-          status_t: transaction.status === 'FAILED' ? 'FAILED' : 'SUCCESS',
+          status_t: transaction.status === 0 ? 'FAILED' : 'SUCCESS',
         });
 
         return acc;
@@ -75,7 +72,13 @@ const Home = () => {
   const handleDelete = async (id) => {
     setError(null);
     try {
-      await axios.delete(`/api/transactions/${id}`);
+      const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
       fetchTransactions();
     } catch (err) {
       setError('Failed to delete transaction. Please try again later.');
@@ -85,7 +88,7 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">Transaction@</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Transactions</h1>
       {isLoading ? (
         <p className="text-center text-blue-500">Loading...</p>
       ) : error ? (
